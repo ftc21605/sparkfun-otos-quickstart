@@ -180,9 +180,6 @@ public class NewTeleOP extends LinearOpMode {
             if (Math.abs(armpower) > 0.05) {
                 savearmpower = armpower;
             }
-            if (Math.abs(powerslide) > 0.05) {
-                savepowerslide = powerslide;
-            }
 
             if (armposition >= maxarmpos) {
                 armpower = Math.min(armpower, 0);
@@ -190,12 +187,17 @@ public class NewTeleOP extends LinearOpMode {
             if (armposition <= 60 && !override_arm_safety) {
                 armpower = Math.max(armpower, 0);
             }
+
+            if (Math.abs(powerslide) > 0.05) {
+                savepowerslide = powerslide;
+            }
             if (slideposition >= slide.maxSlidePosition(armposition)) {
                 powerslide = Math.min(powerslide, 0);
             }
             if (slideposition <= 60) {
                 powerslide = Math.max(powerslide, 0);
             }
+	    
             if (gamepad2.right_trigger > 0) {
                 powerslide = 0.07;
                 if (armposition > arm.getArmDropPosition() + 50) {
