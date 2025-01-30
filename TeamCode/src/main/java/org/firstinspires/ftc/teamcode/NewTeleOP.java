@@ -53,6 +53,7 @@ public class NewTeleOP extends LinearOpMode {
 
         // Scan servo till stop pressed.
         while (opModeIsActive()) {
+            boolean slowbot = false;
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral = gamepad1.left_stick_x * 0.8;
             double yaw = gamepad1.right_stick_x * 0.6;
@@ -71,8 +72,11 @@ public class NewTeleOP extends LinearOpMode {
                     p1bpushed = true;
                 }
             }
+	    else
+		{
             p1bpushed = false;
-
+		}
+	    
             if (gamepad1.x) {
                 if (!p1Xpushed) {
                     arm.Brake();
@@ -80,16 +84,20 @@ public class NewTeleOP extends LinearOpMode {
                     p1Xpushed = true;
                 }
             }
+	    else
+		{
             p1Xpushed = false;
-
+		}
             if (gamepad1.y) {
                 if (!p1Ypushed) {
                     slide.Reset();
                     p1Ypushed = true;
                 }
             }
+	    else
+		{
             p1Ypushed = false;
-
+		}
             if (gamepad1.dpad_down) {
                 override_arm_safety = true;
                 armpower = -0.4;
@@ -97,7 +105,6 @@ public class NewTeleOP extends LinearOpMode {
                 override_arm_safety = false;
             }
 
-            boolean slowbot = false;
             if (gamepad2.y) {
                 grabber.grab();
             }
@@ -147,10 +154,10 @@ public class NewTeleOP extends LinearOpMode {
                 yaw = slowyaw;  // Note: pushing stick forward gives negative value
                 slowbot = true;
             }
-            if (gamepad2.right_bumper && !bumper_right_pushed_arm && !bumper_right_pushed_slide) {
+            if (gamepad2.right_bumper){// && !bumper_right_pushed_arm && !bumper_right_pushed_slide) {
                 arm.MoveTo(arm.getArmDropPosition());
-                bumper_right_pushed_arm = true;
-                bumper_right_pushed_slide = true;
+	    // bumper_right_pushed_arm = true;
+            //    bumper_right_pushed_slide = true;
                 slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()));
             }
             if (bumper_right_pushed_arm && !arm.isBusy()) {
@@ -215,8 +222,8 @@ public class NewTeleOP extends LinearOpMode {
             if (armposition > arm.getArmSlowPosition()) {
                 armpower = Math.min(armpower, 0.2);
             }
-            slide.move(powerslide);
-            arm.move(armpower);
+	    //            slide.move(powerslide);
+            //arm.move(armpower);
 
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("rotator pos:", "%5.2f", rotator.currpos());
