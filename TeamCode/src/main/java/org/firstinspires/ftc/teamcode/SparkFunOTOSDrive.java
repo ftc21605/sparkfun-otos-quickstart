@@ -5,6 +5,7 @@ package org.firstinspires.ftc.teamcode;
 import static com.acmerobotics.roadrunner.ftc.OTOSKt.OTOSPoseToRRPose;
 import static com.acmerobotics.roadrunner.ftc.OTOSKt.RRPoseToOTOSPose;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.messages.PoseMessage;
  * Unless otherwise noted, comments are from SparkFun
  */
 public class SparkFunOTOSDrive extends MecanumDrive {
+
     public static class Params {
         // Assuming you've mounted your sensor to a robot and it's not centered,
         // you can specify the offset for the sensor relative to the center of the
@@ -39,7 +41,12 @@ public class SparkFunOTOSDrive extends MecanumDrive {
         // tweaked slightly to compensate for imperfect mounting (eg. 1.3 degrees).
 
         // RR localizer note: These units are inches and radians.
-        public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(-.73, -3.74, Math.toRadians(-179.3));
+
+        public SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(-3.75, .55, -2.3555-(Math.PI/4));
+
+
+
+        //y = .55
 
         // Here we can set the linear and angular scalars, which can compensate for
         // scaling issues with the sensor measurements. Note that as of firmware
