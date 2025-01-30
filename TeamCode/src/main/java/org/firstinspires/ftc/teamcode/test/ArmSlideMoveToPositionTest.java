@@ -51,7 +51,7 @@ public class ArmSlideMoveToPositionTest extends LinearOpMode {
 		{
 		    if (!bpushed)
 			{
-		    slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()));
+			    slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition(),0.3));
 		    bpushed = true;
 			}
 		    
