@@ -71,8 +71,8 @@ public class autoaidan extends LinearOpMode {
         double drive = .5;        // Desired forward power/speed (-1 to +1) +ve is forward
         double turn = .5;        // Desired turning power/speed (-1 to +1) +ve is CounterClockwise
 
-        Pose2d posStart = new Pose2d(0, 0, 0);
-        SparkFunOTOSDrive driveTrain = new SparkFunOTOSDrive(hardwareMap, posStart);
+
+        SparkFunOTOSDrive driveTrain = null;
         drive_train.init();
         distance.init();
         distance_back.init();
@@ -90,7 +90,7 @@ public class autoaidan extends LinearOpMode {
 
         // navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         // gyro = (IntegratingGyroscope)navxMicro;
-        boolean doall = false;
+        boolean doall = true;
         // here is what happens after we hit start
         while (!isStarted() && !isStopRequested()) {
         }
@@ -144,20 +144,22 @@ public class autoaidan extends LinearOpMode {
             arm.MoveTo(100);
             rotator.setposition(0.45);
             arm.Stop();
-        // while (!gamepad1.a) {
-        //      sleep(1);
-        //  }
-        Pose2d currentPose = driveTrain.pose;
-        Action movement = driveTrain.actionBuilder(currentPose)
-                .turn(Math.toRadians(-97.0))
-                .build();
+            // while (!gamepad1.a) {
+            //      sleep(1);
+            //  }
+            Pose2d posStart = new Pose2d(0, 0, 0);
+            driveTrain = new SparkFunOTOSDrive(hardwareMap, posStart);
+            Action movement = driveTrain.actionBuilder(driveTrain.pose)
+                    .turn(Math.toRadians(-97.0))
+                    .build();
 
-        // Execute the action
-        Actions.runBlocking(movement);
-        // while (!gamepad1.a) {
-        //      sleep(1);
-        //  }
-	}
+            // Execute the action
+            Actions.runBlocking(movement);
+            // while (!gamepad1.a) {
+            //      sleep(1);
+            //  }
+        }
+        arm.Reset();
         targetFound = false;
         desiredTag = null;
         int detection_id = 0;
@@ -251,67 +253,75 @@ public class autoaidan extends LinearOpMode {
         }
 
         rotator.setposition(0.45);
-	sleep(300);
-	double currdist = distance_back.getDistanceMM();
-	drive = -MAX_AUTO_SPEED/2.;
-	drive_train.moveRobot(drive, turn);
-	while(distance_back.getDistanceMM() < currdist+230)
-	    {
-		sleep(1);
-	    }
-	drive_train.off();
-	arm.MoveTo(10);
-	while(arm.isBusy())
-	    {
-		sleep(1);
-	    }
-	arm.move(0.01);
-	grabber.release();
-	//HERE is my new fancy *funcinctonal* code
-
-        posStart = new Pose2d(0, 0, 0);
+        sleep(300);
+        double currdist = distance_back.getDistanceMM();
+        drive = -MAX_AUTO_SPEED/2.;
+        drive_train.moveRobot(drive, turn);
+        while(distance_back.getDistanceMM() < currdist+230)
+        {
+            sleep(1);
+        }
+        drive_train.off();
+        arm.MoveTo(10);
+        while(arm.isBusy())
+        {
+            sleep(1);
+        }
+        arm.move(0.01);
+        grabber.release();
+        Pose2d posStart = new Pose2d(0, 0, 0);
         Actions.runBlocking(driveTrain.actionBuilder(posStart)
-                        .turn(Math.toRadians(90))
-                        .build());
+                .turn(Math.toRadians(95))
+                .build());
 
+        //	drive_train.left_turn_angle(85.);
 
-
-
-	slide.MoveTo(1100,1.);
-	while(slide.isBusy())
-	    {
-		sleep(10);
-	    }
-	sleep(500);
-	grabber.grab();
-	slide.MoveTo(60,0.7);
-	arm.MoveTo(arm.getArmDropPosition(),0.7);
+        slide.MoveTo(1100,0.7);
+        while(slide.isBusy())
+        {
+            sleep(10);
+        }
+        sleep(500);
+        grabber.grab();
+        sleep(500);
+        slide.MoveTo(60,0.7);
+        arm.MoveTo(arm.getArmDropPosition()-200,0.7);
         rotator.setposition(0.45); // rotate sample horizontal
-	drive_train.left_turn_angle(150.);
-	while(!gamepad1.a)
-	    {
-		sleep(1);
-	    }
-	slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()));
-	currdist = distance.getDistanceMM();
-	drive = -MAX_AUTO_SPEED/2.;
-	drive_train.moveRobot(drive, turn);
-	while(distance.getDistanceMM() > 170)
-	    {
-		sleep(1);
-	    }
-	drive_train.off();
-	while(slide.isBusy())
-	    {
-		sleep(1);
-	    }
-		    grabber.release();
-		    sleep(500);
-	while(!gamepad1.a)
-	    {
-		sleep(1);
-	    }
-		    
+        //	posStart = new Pose2d(0, 0, 0);
+        Actions.runBlocking(driveTrain.actionBuilder(posStart)
+                .turnTo(Math.toRadians(-158))
+                .build());
+        // while(!gamepad1.a)
+        //     {
+        // 	sleep(1);
+        //     }
+        slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()),1.);
+        currdist = distance.getDistanceMM();
+        drive = -MAX_AUTO_SPEED/2.;
+        //	drive_train.moveRobot(drive, turn);
+        drive_train.moveRobot_forward(drive,0,10);
+        // while(currdist - distance.getDistanceMM() < 100)
+        //     {
+        // 	sleep(1);
+        //     }
+        // drive_train.off();
+        while(slide.isBusy())
+        {
+            sleep(1);
+        }
+        grabber.release();
+        sleep(500);
+        // while(!gamepad1.a)
+        //     {
+        // 	sleep(1);
+        //     }
+
+        drive_train.moveRobot_backward(drive,0,10);
+        slide.MoveTo(60,0.7);
+        while(slide.isBusy())
+        {
+            sleep(10);
+        }
     }
 
 
