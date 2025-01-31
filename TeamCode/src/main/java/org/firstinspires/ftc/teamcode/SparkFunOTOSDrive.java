@@ -17,21 +17,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.messages.PoseMessage;
 
-@Config // Enable FTC Dashboard configuration
+@Config // Keep this annotation for FTC Dashboard access
 public class SparkFunOTOSDrive extends MecanumDrive {
 
-    public static class Params {
-        // Offset components accessible via the dashboard
+    // Renamed configuration class
+    public static class LocalizationParams {
         public double offsetX = -3.75;
         public double offsetY = 0.55;
         public double offsetHeading = -2.3555 - (Math.PI / 4);
-
-        // Linear and angular scalars
         public double linearScalar = 100 / 98.3171;
         public double angularScalar = 0.9982;
     }
 
-    public static Params PARAMS = new Params(); // Static instance for dashboard access
+    // Renamed static instance
+    public static LocalizationParams PARAMS = new LocalizationParams(); // Static instance for dashboard access
 
     public SparkFunOTOSCorrected otos;
     private Pose2d lastOtosPose = pose;
