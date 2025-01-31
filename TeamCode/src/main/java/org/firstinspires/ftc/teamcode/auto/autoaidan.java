@@ -267,8 +267,16 @@ public class autoaidan extends LinearOpMode {
 	    }
 	arm.move(0.01);
 	grabber.release();
-	drive_train.left_turn_angle(85.);
-		    
+	//HERE is my new fancy *funcinctonal* code
+
+        posStart = new Pose2d(0, 0, 0);
+        Actions.runBlocking(driveTrain.actionBuilder(posStart)
+                        .turn(Math.toRadians(90))
+                        .build());
+
+
+
+
 	slide.MoveTo(1100,1.);
 	while(slide.isBusy())
 	    {
