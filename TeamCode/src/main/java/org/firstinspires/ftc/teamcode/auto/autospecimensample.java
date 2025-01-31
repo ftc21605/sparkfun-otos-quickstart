@@ -90,7 +90,7 @@ public class autospecimensample extends LinearOpMode {
 
         // navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
         // gyro = (IntegratingGyroscope)navxMicro;
-        boolean doall = false;
+        boolean doall = true;
         // here is what happens after we hit start
         while (!isStarted() && !isStopRequested()) {
         }
@@ -158,6 +158,7 @@ public class autospecimensample extends LinearOpMode {
         //      sleep(1);
         //  }
 	}
+	arm.Reset();
         targetFound = false;
         desiredTag = null;
         int detection_id = 0;
@@ -269,7 +270,7 @@ public class autospecimensample extends LinearOpMode {
 	grabber.release();
 	        posStart = new Pose2d(0, 0, 0);
         Actions.runBlocking(driveTrain.actionBuilder(posStart)
-                        .turn(Math.toRadians(90))
+                        .turn(Math.toRadians(95))
                         .build());
 
 	//	drive_train.left_turn_angle(85.);
@@ -283,16 +284,16 @@ public class autospecimensample extends LinearOpMode {
 	grabber.grab();
 	sleep(500);
 	slide.MoveTo(60,0.7);
-	arm.MoveTo(arm.getArmDropPosition()-100,0.7);
+	arm.MoveTo(arm.getArmDropPosition()-200,0.7);
         rotator.setposition(0.45); // rotate sample horizontal
-	posStart = new Pose2d(0, 0, 0);
+	//	posStart = new Pose2d(0, 0, 0);
         Actions.runBlocking(driveTrain.actionBuilder(posStart)
-                        .turn(Math.toRadians(135))
+                        .turnTo(Math.toRadians(-158))
                         .build());
-	while(!gamepad1.a)
-	    {
-		sleep(1);
-	    }
+	// while(!gamepad1.a)
+	//     {
+	// 	sleep(1);
+	//     }
 	slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()),1.);
 	currdist = distance.getDistanceMM();
 	drive = -MAX_AUTO_SPEED/2.;
@@ -309,11 +310,17 @@ public class autospecimensample extends LinearOpMode {
 	    }
 		    grabber.release();
 		    sleep(500);
-	while(!gamepad1.a)
-	    {
-		sleep(1);
-	    }
+	// while(!gamepad1.a)
+	//     {
+	// 	sleep(1);
+	//     }
 		    
+	drive_train.moveRobot_backward(drive,0,10);
+	slide.MoveTo(60,0.7);
+	while(slide.isBusy())
+	    {
+		sleep(10);
+	    }
     }
 
 
