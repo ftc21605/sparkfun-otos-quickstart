@@ -267,32 +267,42 @@ public class autospecimensample extends LinearOpMode {
 	    }
 	arm.move(0.01);
 	grabber.release();
-	drive_train.left_turn_angle(85.);
+	        posStart = new Pose2d(0, 0, 0);
+        Actions.runBlocking(driveTrain.actionBuilder(posStart)
+                        .turn(Math.toRadians(90))
+                        .build());
+
+	//	drive_train.left_turn_angle(85.);
 		    
-	slide.MoveTo(1100,1.);
+	slide.MoveTo(1100,0.7);
 	while(slide.isBusy())
 	    {
 		sleep(10);
 	    }
 	sleep(500);
 	grabber.grab();
+	sleep(500);
 	slide.MoveTo(60,0.7);
-	arm.MoveTo(arm.getArmDropPosition(),0.7);
+	arm.MoveTo(arm.getArmDropPosition()-100,0.7);
         rotator.setposition(0.45); // rotate sample horizontal
-	drive_train.left_turn_angle(150.);
+	posStart = new Pose2d(0, 0, 0);
+        Actions.runBlocking(driveTrain.actionBuilder(posStart)
+                        .turn(Math.toRadians(135))
+                        .build());
 	while(!gamepad1.a)
 	    {
 		sleep(1);
 	    }
-	slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()));
+	slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()),1.);
 	currdist = distance.getDistanceMM();
 	drive = -MAX_AUTO_SPEED/2.;
-	drive_train.moveRobot(drive, turn);
-	while(distance.getDistanceMM() > 170)
-	    {
-		sleep(1);
-	    }
-	drive_train.off();
+	//	drive_train.moveRobot(drive, turn);
+	drive_train.moveRobot_forward(drive,0,10);
+	// while(currdist - distance.getDistanceMM() < 100)
+	//     {
+	// 	sleep(1);
+	//     }
+	// drive_train.off();
 	while(slide.isBusy())
 	    {
 		sleep(1);
