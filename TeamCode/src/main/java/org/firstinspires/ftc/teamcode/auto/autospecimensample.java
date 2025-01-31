@@ -1,27 +1,21 @@
 
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.Distance;
+import org.firstinspires.ftc.teamcode.hardware.DistanceBack;
 import org.firstinspires.ftc.teamcode.hardware.Grabber;
 import org.firstinspires.ftc.teamcode.hardware.Rotator;
 import org.firstinspires.ftc.teamcode.hardware.Slide;
-import org.firstinspires.ftc.teamcode.hardware.Distance;
-import org.firstinspires.ftc.teamcode.hardware.DistanceBack;
 
 @Autonomous(name = "auto specimen no parking", group = "Wallace")
 //@Disabled
-public class autospecimennopark extends LinearOpMode {
+public class autospecimensample extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
     boolean skip_opencv = false;

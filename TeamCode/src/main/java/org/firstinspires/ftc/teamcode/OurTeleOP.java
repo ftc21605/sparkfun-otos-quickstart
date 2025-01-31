@@ -29,6 +29,7 @@ public class OurTeleOP extends LinearOpMode {
     boolean p1Ypushed = false;
     boolean p1bpushed = false;
     boolean override_arm_safety = false;
+    boolean override_slide_safety = false;
     boolean auto_arm_slide = false;
     boolean auto_arm_slide_up = false;
     boolean auto_arm_slide_down = false;
@@ -106,6 +107,12 @@ public class OurTeleOP extends LinearOpMode {
                 armpower = -0.4;
             } else {
                 override_arm_safety = false;
+            }
+            if (gamepad1.dpad_up) {
+                override_slide_safety = true;
+                powerslide = -0.3;
+            } else {
+                override_slide_safety = false;
             }
 
             if (gamepad2.y) {
@@ -219,7 +226,7 @@ public class OurTeleOP extends LinearOpMode {
             if (slideposition >= slide.maxSlidePosition(armposition)) {
                 powerslide = Math.min(powerslide,0);
             }
-            if (slideposition <= 60) {
+            if (slideposition <= 60 && !override_slide_safety) {
                 powerslide = Math.max(powerslide, 0);
             }
 
@@ -265,7 +272,7 @@ public class OurTeleOP extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("rotator pos:", "%5.2f", rotator.currpos());
             telemetry.addData("armpos:", "%10d", armposition);
-            telemetry.addData("slidepos:", "%10df", slideposition);
+            telemetry.addData("slidepos:", "%10d", slideposition);
             telemetry.addData(">", "Press a to turn left.");
             telemetry.addData(">", "Press b to turn right.");
             telemetry.addData(">", "Press X to grab.");
