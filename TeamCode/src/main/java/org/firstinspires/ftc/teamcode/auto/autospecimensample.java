@@ -269,13 +269,13 @@ public class autospecimensample extends LinearOpMode {
 	grabber.release();
 	drive_train.left_turn_angle(85.);
 		    
-	slide.MoveTo(1100);
+	slide.MoveTo(1100,1.);
 	while(slide.isBusy())
 	    {
 		sleep(1);
 	    }
-	grabber.grab();
 	sleep(500);
+	grabber.grab();
 	slide.MoveTo(60,0.7);
 	arm.MoveTo(arm.getArmDropPosition(),0.7);
         rotator.setposition(0.45); // rotate sample horizontal
