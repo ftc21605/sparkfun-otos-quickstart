@@ -30,8 +30,8 @@ public class autospecimennopark extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightBackDrive = null;
-    IntegratingGyroscope gyro;
-    NavxMicroNavigationSensor navxMicro;
+    //    IntegratingGyroscope gyro;
+    //NavxMicroNavigationSensor navxMicro;
     static final double COUNTS_PER_MOTOR_REV = 28;    // eg: REV Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 20.0;     // 4x and 5x gear boxes.
     static final double WHEEL_DIAMETER_INCHES = 3.8;     // For figuring circumference
@@ -54,7 +54,6 @@ public class autospecimennopark extends LinearOpMode {
     private Distance distance = new Distance(this);
     private DistanceBack distance_back = new DistanceBack(this);
 
-    SlideBusyThread slidebusy = new SlideBusyThread();
     @Override
     public void runOpMode() {
 
@@ -64,7 +63,7 @@ public class autospecimennopark extends LinearOpMode {
         slide.init();
        grabber.init();
        rotator.init();
-	sleep(500);
+       //	sleep(500);
 	//	rotator.initpos();
 	grabber.grab();
        leftFrontDrive = hardwareMap.get(DcMotor.class, "frontleft");
@@ -72,8 +71,8 @@ public class autospecimennopark extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "frontright");
         rightBackDrive = hardwareMap.get(DcMotor.class, "backright");
 
-        navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
-        gyro = (IntegratingGyroscope)navxMicro;
+        // navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
+        // gyro = (IntegratingGyroscope)navxMicro;
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -115,9 +114,6 @@ public class autospecimennopark extends LinearOpMode {
 	//	    moveRobot_forward(DRIVE_SPEED+0.1,0,5);
 	//arm.Float();
 	    arm.MoveTo(520,0.5);
-            // while (!gamepad1.a) {
-            //     sleep(1);
-            // }
 
 	//	left_turn(92);
 	//arm.Brake();
@@ -142,7 +138,10 @@ public class autospecimennopark extends LinearOpMode {
             rightFrontDrive.setPower((0));
             leftBackDrive.setPower((0));
             rightBackDrive.setPower((0));
-	    	grabber.release();
+	    //	    	grabber.release();
+             while (!gamepad1.a) {
+                 sleep(1);
+             }
 
 	telemetry.addData("slide power after a: ", "%5.2f", slide.getPower());
         telemetry.update();
@@ -320,40 +319,6 @@ rotator.setposition(0.45);
 
     }
 
-    double left_turn(double ANGLE) {
-        Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double current_angle = angles.firstAngle;
-        double driveto_angle = current_angle + ANGLE;
-        telemetry.addData(">", "input: %.1f, current angle %.1f, driveto: %.1f", ANGLE, current_angle, driveto_angle);
-        telemetry.update();
-
-        leftFrontDrive.setPower(-TURN_SPEED);
-        rightFrontDrive.setPower(TURN_SPEED);
-        leftBackDrive.setPower(-TURN_SPEED);
-        rightBackDrive.setPower(TURN_SPEED);
-        if (driveto_angle > 180) {
-            while ((current_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) < 0 || current_angle > (driveto_angle - 360)) {
-                telemetry.addData(">", "angle %.1f", current_angle);
-                telemetry.update();
-                sleep(1);
-            }
-
-        } else {
-            while ((current_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) < driveto_angle) {
-//            orientation = imu.getRobotYawPitchRollAngles();
-                telemetry.addData(">", "angle %.1f", current_angle);
-                telemetry.update();
-                sleep(1);
-            }
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        telemetry.addData(">", "final angle %.1f", gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
-        telemetry.update();
-        return driveto_angle;
-    }
 
     void right_turn_counter(long ticks) {
 	long toposition = leftFrontDrive.getCurrentPosition() + ticks;
@@ -372,52 +337,4 @@ rotator.setposition(0.45);
 	return;
     }
 
-    double right_turn(double ANGLE) {
-        Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double current_angle = angles.firstAngle;
-        double driveto_angle = current_angle - ANGLE;
-        telemetry.addData("right turn: ", "input: %.1f, current angle %.1f, driveto: %.1f", ANGLE, current_angle, driveto_angle);
-        telemetry.update();
-        leftFrontDrive.setPower(TURN_SPEED);
-        rightFrontDrive.setPower(-TURN_SPEED);
-        leftBackDrive.setPower(TURN_SPEED);
-        rightBackDrive.setPower(-TURN_SPEED);
-        if (driveto_angle < -180) {
-            //current_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-            while ((current_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) < 0 || current_angle > (driveto_angle + 360)) {
-                telemetry.addData(">", "angle %.1f", current_angle);
-                telemetry.update();
-                sleep(1);
-            }
-        } else {
-            while ((current_angle = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle) > driveto_angle) {
-                telemetry.addData(">", "angle %.1f", current_angle);
-                telemetry.update();
-                sleep(1);
-            }
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        return driveto_angle;
-    }
-
-
-
-
-private class SlideBusyThread implements Runnable{
-    public SlideBusyThread(){
-        //Anything you need to do in a constructor
-    }
-
-    public void run(){
-        while(slide.isBusy())
-	    {
-		sleep(5);
-	    }
-	slide.move(0.05);
-        //Anything you need to do in the background. Put a while loop in here if you need it to loop. Maybe while the op mod is still active.
-    }
-}
 }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.Slide;
 
-@TeleOp(name = "Test: Arm Slide Auto Move Position", group = "TEST")
+@TeleOp(name = "Test: Arm Slide Auto Move Position", group = "Test")
 //@Disabled
 public class ArmSlideMoveToPositionTest extends LinearOpMode {
 

@@ -9,9 +9,9 @@ import org.firstinspires.ftc.teamcode.hardware.DriveTrain;
 //@Disabled
 public class DpadDrive extends LinearOpMode {
 
-    DriveTrain drive = new DriveTrain(this);
     // Declare OpMode members for each of the 4 motors.
     private final ElapsedTime runtime = new ElapsedTime();
+    DriveTrain drive = new DriveTrain(this);
 
     @Override
     public void runOpMode() {
@@ -25,47 +25,41 @@ public class DpadDrive extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("Status", "Run Time: " + runtime);
             double axial = 0;
             double lateral = 0;
-	    double yaw = 0;
-	    if (gamepad1.dpad_right)
-		{
-		    lateral = 0.2;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "Dpad right pushed ");
-		}
-	    if (gamepad1.dpad_left)
-		{
-		    lateral = -0.2;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "Dpad left pushed ");
-		}
-	    if (gamepad1.dpad_up)
-		{
-		    axial = 0.2;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "Dpad up pushed ");
-		}
-	    if (gamepad1.dpad_down)
-		{
-		    axial = -0.2;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "Dpad down pushed ");
-		}
-	    if (gamepad1.left_bumper)
-		{
-		    yaw = -0.15;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "left bumper pushed ");
-		}
-	    if (gamepad1.right_bumper)
-		{
-		    yaw = 0.15;  // Note: pushing stick forward gives negative value
-           telemetry.addData("Status", "right bumper pushed ");
-		}
-	                telemetry.addData("axial:", "%5.2f", axial);
-	                telemetry.addData("lateral:", "%5.2f", lateral);
-	                telemetry.addData("yaw:", "%5.2f", yaw);
+            double yaw = 0;
+            if (gamepad2.dpad_right) {
+                lateral = drive.getDpadLateralPower();  // Note: pushing stick forward gives negative value
+                telemetry.addData("Status", "Dpad right pushed ");
+            }
+            if (gamepad2.dpad_left) {
+                lateral = -drive.getDpadLateralPower();
+                telemetry.addData("Status", "Dpad left pushed ");
+            }
+            if (gamepad2.dpad_up) {
+                axial = drive.getDpadAxialPower();
+                telemetry.addData("Status", "Dpad up pushed ");
+            }
+            if (gamepad2.dpad_down) {
+                axial = -drive.getDpadAxialPower();
+                telemetry.addData("Status", "Dpad down pushed ");
+            }
+            if (gamepad2.right_stick_x < -0.5) {
+                yaw = drive.getDpadYawPower();  // Note: pushing stick forward gives negative value
+                telemetry.addData("Status", "left bumper pushed ");
+            }
+            if (gamepad2.right_stick_x > 0.5) {
+                yaw = -drive.getDpadYawPower();
+                telemetry.addData("Status", "right bumper pushed ");
+            }
+            telemetry.addData("axial:", "%5.2f", axial);
+            telemetry.addData("lateral:", "%5.2f", lateral);
+            telemetry.addData("yaw:", "%5.2f", yaw);
 
-            //double lateral = gamepad1.left_stick_x;
+            //double lateral = gamepad2.left_stick_x;
             drive.driveRobotSlow(axial, lateral, yaw);
-        telemetry.update();
+            telemetry.update();
         }
     }
 }

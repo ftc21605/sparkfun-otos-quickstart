@@ -11,6 +11,7 @@ public class Arm {
     int arm_drop_position = 1650;
     int arm_slow_position = 1500;
     int arm_min_position = 100; // then power off and drop
+    int arm_max_position = 2000; // for hanging
     int startposition = 818;
     boolean movepos = false; // state of arm MOVE_TO_POSTION -> true
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
@@ -71,6 +72,9 @@ public class Arm {
     }
     public int getArmMinPosition() {
 	return arm_min_position;
+    }
+    public int getArmMaxPosition() {
+	return arm_max_position;
     }
     public void Reset(){
 	movepos = false;
