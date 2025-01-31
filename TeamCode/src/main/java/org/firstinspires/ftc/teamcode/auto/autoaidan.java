@@ -26,9 +26,9 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "auto aaa", group = "Wallace")
+@Autonomous(name = "auto Aidan", group = "Wallace")
 //@Disabled
-public class autospecimensample extends LinearOpMode {
+public class autoaidan extends LinearOpMode {
 
     /* Declare OpMode members. */
     //    IntegratingGyroscope gyro;
