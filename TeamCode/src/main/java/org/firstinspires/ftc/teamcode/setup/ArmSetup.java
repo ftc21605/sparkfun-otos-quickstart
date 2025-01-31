@@ -34,7 +34,7 @@ public class ArmSetup extends LinearOpMode {
 		{
 		    if (!apushed)
 			{
-		    arm.MoveTo(950);
+		    arm.MoveTo(1020);
 		    apushed = true;
 			}
 		    

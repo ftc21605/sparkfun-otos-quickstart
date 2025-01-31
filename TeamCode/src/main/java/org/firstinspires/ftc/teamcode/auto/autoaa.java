@@ -25,7 +25,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "auto aa", group = "Wallace")
+@Autonomous(name = "auto bb", group = "Wallace")
 //@Disabled
 public class autoaa extends LinearOpMode {
 
