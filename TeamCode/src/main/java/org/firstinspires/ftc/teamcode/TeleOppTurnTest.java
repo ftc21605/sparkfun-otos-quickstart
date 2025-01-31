@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "TeleOp Turn Test")
-public class AutonTest extends LinearOpMode {
+public class TeleOppTurnTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         Pose2d posStart = new Pose2d(0, 0, 0);
