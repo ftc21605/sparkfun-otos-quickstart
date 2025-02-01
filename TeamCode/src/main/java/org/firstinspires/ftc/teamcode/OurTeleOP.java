@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.Grabber;
 import org.firstinspires.ftc.teamcode.hardware.Rotator;
 import org.firstinspires.ftc.teamcode.hardware.Slide;
 
-@TeleOp(name = "TeleOp", group = "AWallace")
+@TeleOp(name = "AAA TeleOp", group = "AWallace")
 //@Disabled
 public class OurTeleOP extends LinearOpMode {
 
@@ -183,7 +183,7 @@ public class OurTeleOP extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 if (!rightbumper) {
                     arm.Brake();
-                    arm.MoveTo(arm.getArmDropPosition(), 1.);
+                    arm.MoveTo(arm.getArmDropPosition()-200, 1.);
                     rotator.setposition(0.45); // rotate sample horizontal
                     rightbumper = true;
                     armup = true;

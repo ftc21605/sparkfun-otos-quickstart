@@ -26,7 +26,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "auto aaa", group = "Wallace")
+@Autonomous(name = "auto AAA", group = "Wallace")
 //@Disabled
 public class autospecimensample extends LinearOpMode {
 
@@ -77,12 +77,18 @@ public class autospecimensample extends LinearOpMode {
         distance.init();
         distance_back.init();
         arm.init();
+	arm.MoveTo(1020);
+	while(arm.isBusy())
+	    {
+		sleep(10);
+	    }
         slide.init();
         grabber.init();
         rotator.init();
         initAprilTag();
         setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
         //        sleep(500);
+	arm.Reset();
         arm.move(0.1);
         //	sleep(500);
         //	rotator.initpos();
@@ -147,8 +153,7 @@ public class autospecimensample extends LinearOpMode {
         // while (!gamepad1.a) {
         //      sleep(1);
         //  }
-        Pose2d currentPose = driveTrain.pose;
-        Action movement = driveTrain.actionBuilder(currentPose)
+        Action movement = driveTrain.actionBuilder(driveTrain.pose)
                 .turn(Math.toRadians(-97.0))
                 .build();
 
@@ -158,7 +163,6 @@ public class autospecimensample extends LinearOpMode {
         //      sleep(1);
         //  }
 	}
-	arm.Reset();
         targetFound = false;
         desiredTag = null;
         int detection_id = 0;
@@ -231,25 +235,29 @@ public class autospecimensample extends LinearOpMode {
             drive_train.moveRobot(drive, turn);
             sleep(10);
         }
+	arm.Reset();
         while (run_with_distance_sensor) {
 
             telemetry.addData("distance: ", "%5.2f", distance_back.getDistanceMM());
             telemetry.update();
             if (distance_back.getDistanceMM() > 30) {
                 drive = MAX_AUTO_SPEED / 2.;
+		turn = 0;
             } else {
                 drive = 0;
                 run_with_distance_sensor = false;
                 drive_train.Stop();
                 break;
             }
+            drive_train.moveRobot(drive, turn);
+	    sleep(10);
         }
         drive_train.Stop();
         telemetry.addData(">", "All done, press A");
         telemetry.update();
-        if (!gamepad1.a) {
-            sleep(1);
-        }
+        // if (!gamepad1.a) {
+        //     sleep(1);
+        // }
 
         rotator.setposition(0.45);
 	sleep(300);
@@ -269,7 +277,8 @@ public class autospecimensample extends LinearOpMode {
 	arm.move(0.01);
 	grabber.release();
 	        posStart = new Pose2d(0, 0, 0);
-        Actions.runBlocking(driveTrain.actionBuilder(posStart)
+            driveTrain.pose = posStart;
+        Actions.runBlocking(driveTrain.actionBuilder(driveTrain.pose)
                         .turn(Math.toRadians(95))
                         .build());
 
@@ -288,7 +297,7 @@ public class autospecimensample extends LinearOpMode {
         rotator.setposition(0.45); // rotate sample horizontal
 	//	posStart = new Pose2d(0, 0, 0);
         Actions.runBlocking(driveTrain.actionBuilder(posStart)
-                        .turnTo(Math.toRadians(-158))
+                        .turnTo(Math.toRadians(-153))
                         .build());
 	// while(!gamepad1.a)
 	//     {

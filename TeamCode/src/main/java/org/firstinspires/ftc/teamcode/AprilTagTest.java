@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainCon
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.firstinspires.ftc.teamcode.hardware.DistanceBack;
@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.hardware.Slide;
 import org.firstinspires.ftc.teamcode.hardware.Grabber;
 
 @TeleOp(name="Tank Drive To AprilTag", group = "Concept")
+@Disabled
 public class AprilTagTest extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.

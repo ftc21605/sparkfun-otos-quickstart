@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "TeleOp Turn Test")
+@Disabled
 public class TeleOppTurnTest extends LinearOpMode {
     @Override
     public void runOpMode() {

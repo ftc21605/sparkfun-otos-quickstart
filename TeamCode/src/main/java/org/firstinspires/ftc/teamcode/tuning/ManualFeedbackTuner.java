@@ -9,7 +9,9 @@ import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
 import org.firstinspires.ftc.teamcode.TankDrive;
 import org.firstinspires.ftc.teamcode.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+@Disabled
 public final class ManualFeedbackTuner extends LinearOpMode {
     public static double DISTANCE = 64;
 

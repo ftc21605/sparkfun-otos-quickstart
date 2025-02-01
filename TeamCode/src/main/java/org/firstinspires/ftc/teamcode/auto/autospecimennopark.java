@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.hardware.Rotator;
 import org.firstinspires.ftc.teamcode.hardware.Slide;
 
 @Autonomous(name = "auto specimen no park", group = "Wallace")
-//@Disabled
+@Disabled
 public class autospecimennopark extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
