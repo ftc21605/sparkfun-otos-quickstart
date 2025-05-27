@@ -11,7 +11,7 @@ public class Arm {
     int arm_drop_position = 1850;
     int arm_slow_position = 1500;
     int arm_min_position = 100; // then power off and drop
-    int arm_max_position = 2000; // for hanging
+    int arm_max_position = 1920; // for hanging
     int startposition = 925;
     boolean movepos = false; // state of arm MOVE_TO_POSTION -> true
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)

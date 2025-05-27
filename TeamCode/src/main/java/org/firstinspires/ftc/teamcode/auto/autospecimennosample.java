@@ -148,7 +148,9 @@ public class autospecimennosample extends LinearOpMode {
                 sleep(5);
             }
             if (!dosample) {
-                arm.MoveTo(arm.getArmDropPosition() - 200, 0.7);
+		arm.Reset();
+		sleep(500);
+                arm.MoveTo(arm.getArmDropPosition()-200, 0.7);
                 while (arm.isBusy()) {
                     sleep(5);
                 }

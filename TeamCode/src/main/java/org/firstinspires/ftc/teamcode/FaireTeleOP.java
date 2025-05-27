@@ -10,9 +10,9 @@ import org.firstinspires.ftc.teamcode.hardware.Grabber;
 import org.firstinspires.ftc.teamcode.hardware.Rotator;
 import org.firstinspires.ftc.teamcode.hardware.Slide;
 
-@TeleOp(name = "AAA TeleOp", group = "AWallace")
+@TeleOp(name = "Faire TeleOp", group = "AWallace")
 //@Disabled
-public class OurTeleOP extends LinearOpMode {
+public class FaireTeleOP extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
     //    Grabber grabber = new Grabber(this);
@@ -77,46 +77,30 @@ public class OurTeleOP extends LinearOpMode {
             //     }
             // }
             drive.driveRobot(axial, lateral, yaw);
-	    if (gamepad1.a)
-		{
-		    if (!p1apushed)
-			{
-		    arm.MoveTo(-100,0.05);
-		    p1apushed = true;
-		    no_move_arm = true;		    
-			}
-		}
-	    else
-		{
-		    p1apushed = false;
-		}
-		    
-            if (gamepad1.b) {
-                if (!p1bpushed) {
-                    arm.Float();
-                    p1bpushed = true;
+            if (gamepad1.y) {
+                grabber.grab();
+            }
+            if (gamepad1.x) {
+                grabber.release();
+            }
+	    if (gamepad1.a) {
+                if (!apushed) {
+                    //                    rotator.rotate_left();
+                    rotator.setposition(0.45);
+                    apushed = true;
                 }
             } else {
-                p1bpushed = false;
+                apushed = false;
+            }
+            if (gamepad1.b) {
+                if (!bpushed) {
+                    rotator.rotate_right();
+                    bpushed = true;
+                }
+            } else {
+                bpushed = false;
             }
 
-            if (gamepad1.x) {
-                if (!p1Xpushed) {
-                    arm.Brake();
-                    arm.Reset();
-                    p1Xpushed = true;
-                }
-            } else {
-                p1Xpushed = false;
-            }
-            if (gamepad1.y) {
-                if (!p1Ypushed) {
-                    slide.Reset();
-                    p1Ypushed = true;
-                }
-            } else {
-                p1Ypushed = false;
-            }
             if (gamepad1.dpad_down) {
                 override_arm_safety = true;
                 armpower = -0.4;
@@ -130,29 +114,6 @@ public class OurTeleOP extends LinearOpMode {
                 override_slide_safety = false;
             }
 
-            if (gamepad2.y) {
-                grabber.grab();
-            }
-            if (gamepad2.x) {
-                grabber.release();
-            }
-            if (gamepad2.a) {
-                if (!apushed) {
-                    //                    rotator.rotate_left();
-                    rotator.setposition(0.45);
-                    apushed = true;
-                }
-            } else {
-                apushed = false;
-            }
-            if (gamepad2.b) {
-                if (!bpushed) {
-                    rotator.rotate_right();
-                    bpushed = true;
-                }
-            } else {
-                bpushed = false;
-            }
             if (gamepad2.dpad_right) {
                 lateral = drive.getDpadLateralPower();
                 telemetry.addData("Status", "Dpad right pushed ");
@@ -180,7 +141,7 @@ public class OurTeleOP extends LinearOpMode {
                 slowbot = true;
             }
 
-            if (gamepad2.left_bumper) {
+            if (gamepad1.left_bumper) {
                 if (!leftbumper) {
                     slide.Float();
                     slide.move(-0.7);
@@ -195,10 +156,10 @@ public class OurTeleOP extends LinearOpMode {
                 leftbumper = false;
             }
 
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 if (!rightbumper) {
                     arm.Brake();
-                    arm.MoveTo(arm.getArmDropPosition()-200, 1.);
+                    arm.MoveTo(arm.getArmDropPosition()-500, 1.);
                     rotator.setposition(0.45); // rotate sample horizontal
                     rightbumper = true;
                     armup = true;
@@ -210,8 +171,8 @@ public class OurTeleOP extends LinearOpMode {
             } else {
                 rightbumper = false;
             }
-            if (armup && armposition > 1100) {
-                slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()), 1.);
+            if (armup && armposition > 500) {
+                slide.MoveTo(1000, 1.);
                 armup = false;
                 telemetry.addData(">", "should move slide Press dpad_up to continue");
 

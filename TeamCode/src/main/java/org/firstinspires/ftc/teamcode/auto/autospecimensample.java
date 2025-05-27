@@ -87,6 +87,7 @@ public class autospecimensample extends LinearOpMode {
         rotator.init();
         initAprilTag();
         setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
+	sleep(1000);
         //        sleep(500);
 	arm.Reset();
         arm.move(0.1);
@@ -194,14 +195,14 @@ public class autospecimensample extends LinearOpMode {
                     telemetry.addData("distance, press A", "%5.2f", distance_back.getDistanceMM());
                     telemetry.update();
 
-                    drive_train.Stop();
+                    //drive_train.Stop();
 
-                    if (!gamepad1.a) {
-                        sleep(1);
-                    }
+                    // if (!gamepad1.a) {
+                    //     sleep(1);
+                    // }
 
                 }
-                sleep(1); // target not found. sleep and try again
+                sleep(10); // target not found. sleep and try again
             }
             // Determine heading and range error so we can use them to control the robot automatically.
             double rangeError = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
@@ -269,6 +270,9 @@ public class autospecimensample extends LinearOpMode {
 		sleep(1);
 	    }
 	drive_train.off();
+	sleep(1000);
+	posStart = new Pose2d(0, 0, 0);
+            driveTrain.pose = posStart;
 	arm.MoveTo(10);
 	while(arm.isBusy())
 	    {
@@ -276,15 +280,13 @@ public class autospecimensample extends LinearOpMode {
 	    }
 	arm.move(0.01);
 	grabber.release();
-	        posStart = new Pose2d(0, 0, 0);
-            driveTrain.pose = posStart;
         Actions.runBlocking(driveTrain.actionBuilder(driveTrain.pose)
                         .turn(Math.toRadians(95))
                         .build());
 
 	//	drive_train.left_turn_angle(85.);
 		    
-	slide.MoveTo(1100,0.7);
+	slide.MoveTo(1030,0.7);
 	while(slide.isBusy())
 	    {
 		sleep(10);
@@ -293,7 +295,7 @@ public class autospecimensample extends LinearOpMode {
 	grabber.grab();
 	sleep(500);
 	slide.MoveTo(60,0.7);
-	arm.MoveTo(arm.getArmDropPosition()-200,0.7);
+	arm.MoveTo(arm.getArmDropPosition(),0.7);
         rotator.setposition(0.45); // rotate sample horizontal
 	//	posStart = new Pose2d(0, 0, 0);
         Actions.runBlocking(driveTrain.actionBuilder(posStart)
@@ -306,8 +308,14 @@ public class autospecimensample extends LinearOpMode {
 	slide.MoveTo(slide.maxSlidePosition(arm.getArmDropPosition()),1.);
 	currdist = distance.getDistanceMM();
 	drive = -MAX_AUTO_SPEED/2.;
+	// while(slide.isBusy())
+	//     {
+	// 	sleep(10);
+	//     }
+	//	sleep(500);
 	//	drive_train.moveRobot(drive, turn);
-	drive_train.moveRobot_forward(drive,0,10);
+	sleep(1000);
+	drive_train.moveRobot_forward(drive,0,11);
 	// while(currdist - distance.getDistanceMM() < 100)
 	//     {
 	// 	sleep(1);
@@ -319,11 +327,12 @@ public class autospecimensample extends LinearOpMode {
 	    }
 		    grabber.release();
 		    sleep(500);
-	// while(!gamepad1.a)
+		    // while(!gamepad1.a)
 	//     {
 	// 	sleep(1);
 	//     }
 		    
+	sleep(1000);
 	drive_train.moveRobot_backward(drive,0,10);
 	slide.MoveTo(60,0.7);
 	while(slide.isBusy())
