@@ -67,23 +67,37 @@ public class FaireTeleOP extends LinearOpMode {
                 lateral = gamepad1.left_stick_x * 0.8;
             }
             double yaw = gamepad1.right_stick_x * 0.6;
-            double armpower = -gamepad2.left_stick_y;  // Note: pushing stick forward gives negative value
-            double powerslide = -gamepad2.right_stick_y;  // Note: pushing stick forward gives negative value
+            double armpower = 0;  // Note: pushing stick forward gives negative value
             int armposition = arm.getCurrentPosition();
             int slideposition = slide.getCurrentPosition();
+            double powerslide = 0;//-gamepad1.right_stick_y;  // Note: pushing stick forward gives negative value
+            if (gamepad1.right_trigger > 0 || gamepad1.left_trigger > 0) {
+                if (gamepad1.right_trigger > 0) {
+                    if (slideposition < 1000) {
+                        powerslide = gamepad1.right_trigger;
+                    }
+                } else {
+                    powerslide = -gamepad1.left_trigger;
+                }
+            }
             // if (Math.abs(gamepad1.left_stick_x) > 0.8) {
             //     if (Math.abs(gamepad1.left_stick_y) < 0.3) {
             //         lateral = gamepad1.left_stick_x*0.8;
             //     }
             // }
-            drive.driveRobot(axial, lateral, yaw);
-            if (gamepad1.y) {
+            if (gamepad2.a) {
+                axial = 0;
+                lateral = 0;
+                yaw = 0;
+            }
+            drive.driveRobot(axial * 0.7, lateral, yaw * 0.9);
+            if (gamepad1.y && !gamepad2.a) {
                 grabber.grab();
             }
-            if (gamepad1.x) {
+            if (gamepad1.x && !gamepad2.a) {
                 grabber.release();
             }
-	    if (gamepad1.a) {
+            if (gamepad1.a && !gamepad2.a) {
                 if (!apushed) {
                     //                    rotator.rotate_left();
                     rotator.setposition(0.45);
@@ -92,7 +106,7 @@ public class FaireTeleOP extends LinearOpMode {
             } else {
                 apushed = false;
             }
-            if (gamepad1.b) {
+            if (gamepad1.b && !gamepad2.a) {
                 if (!bpushed) {
                     rotator.rotate_right();
                     bpushed = true;
@@ -101,78 +115,40 @@ public class FaireTeleOP extends LinearOpMode {
                 bpushed = false;
             }
 
-            if (gamepad1.dpad_down) {
-                override_arm_safety = true;
-                armpower = -0.4;
-            } else {
-                override_arm_safety = false;
-            }
-            if (gamepad1.dpad_up) {
-                override_slide_safety = true;
-                powerslide = -0.3;
-            } else {
-                override_slide_safety = false;
-            }
-
-            if (gamepad2.dpad_right) {
-                lateral = drive.getDpadLateralPower();
-                telemetry.addData("Status", "Dpad right pushed ");
-                slowbot = true;
-            }
-            if (gamepad2.dpad_left) {
-                lateral = -drive.getDpadLateralPower();
-                slowbot = true;
-            }
-            if (gamepad2.dpad_up) {
-                axial = drive.getDpadAxialPower();
-                slowbot = true;
-            }
-            if (gamepad2.dpad_down) {
-                axial = -drive.getDpadAxialPower();
-                telemetry.addData("Status", "Dpad down pushed ");
-                slowbot = true;
-            }
-            if (gamepad2.right_stick_x < -0.5) {
-                yaw = -drive.getDpadYawPower();
-                slowbot = true;
-            }
-            if (gamepad2.right_stick_x > 0.5) {
-                yaw = drive.getDpadYawPower();
-                slowbot = true;
-            }
-
-            if (gamepad1.left_bumper) {
+            if (gamepad1.left_bumper && !gamepad2.a) {
                 if (!leftbumper) {
                     slide.Float();
                     slide.move(-0.7);
                     leftbumper = true;
                     slidedown = true;
-		    auto_arm_slide = true;
-		    auto_arm_slide_down = true;
-		    auto_arm_slide_up = false;
+                    auto_arm_slide = true;
+                    auto_arm_slide_down = true;
+                    auto_arm_slide_up = false;
                 }
 
             } else {
                 leftbumper = false;
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper && !gamepad2.a) {
                 if (!rightbumper) {
                     arm.Brake();
-                    arm.MoveTo(arm.getArmDropPosition()-500, 1.);
+                    arm.MoveTo(arm.getArmDropPosition() - 400, 1.);
                     rotator.setposition(0.45); // rotate sample horizontal
                     rightbumper = true;
                     armup = true;
-		    auto_arm_slide_down = false;
-		    auto_arm_slide = true;
-		    auto_arm_slide_up = true;
+                    auto_arm_slide_down = false;
+                    auto_arm_slide = true;
+                    auto_arm_slide_up = true;
                 }
 
             } else {
                 rightbumper = false;
             }
+
+
             if (armup && armposition > 500) {
-                slide.MoveTo(1000, 1.);
+                slide.MoveTo(1800, 1.);
                 armup = false;
                 telemetry.addData(">", "should move slide Press dpad_up to continue");
 
@@ -184,7 +160,7 @@ public class FaireTeleOP extends LinearOpMode {
             if (slowbot) {
                 drive.driveRobotSlow(axial, lateral, yaw);
             }
-	    
+
             if (Math.abs(armpower) > 0.05) {
                 savearmpower = armpower;
             }
@@ -200,33 +176,19 @@ public class FaireTeleOP extends LinearOpMode {
                 savepowerslide = powerslide;
             }
             if (slideposition >= slide.maxSlidePosition(armposition)) {
-                powerslide = Math.min(powerslide,0);
+                powerslide = Math.min(powerslide, 0);
             }
             if (slideposition <= 60 && !override_slide_safety) {
                 powerslide = Math.max(powerslide, 0);
             }
 
-             if (gamepad2.right_trigger > 0) {
-                 powerslide = 0.07;
-                 if (armposition > arm.getArmDropPosition() + 50) {
-                     armpower = -0.1;
-                 }
-                 if (armposition < arm.getArmDropPosition() - 50) {
-                     armpower = 0.1;
-                 }
-            }
-            // if (gamepad2.left_trigger > 0) {
-            //     if (armposition < arm.getArmDropPosition()) {
-            //         armpower = 0.4;
-            //     }
-            // }
             if (armposition > arm.getArmSlowPosition() && slideposition > 2000) {
                 armpower = Math.min(armpower, 0.2);
             }
             if (armdown && armposition < 100) {
                 arm.Stop();
                 armdown = false;
-		auto_arm_slide_down = false;
+                auto_arm_slide_down = false;
             }
             if (slidedown && slideposition < 60) {
                 slide.Stop();
@@ -235,16 +197,29 @@ public class FaireTeleOP extends LinearOpMode {
                 arm.move(-0.7);
                 armdown = true;
             }
-	    if (auto_arm_slide && !slide.isBusy() && !arm.isBusy() && !auto_arm_slide_up && !auto_arm_slide_down)
-		{
-		    auto_arm_slide = false;
-		}
-	    if (!auto_arm_slide && !no_move_arm)
-	     	{
-	                slide.move(powerslide);
-	     	       arm.move(armpower);
-	     	}
-
+            if (auto_arm_slide && !slide.isBusy() && !arm.isBusy() && !auto_arm_slide_up && !auto_arm_slide_down) {
+                auto_arm_slide = false;
+            }
+            if (!auto_arm_slide && !no_move_arm) {
+                slide.move(powerslide);
+                arm.move(armpower);
+            }
+            // if (gamepad2.right_trigger > 0)
+            // 	{
+            //
+            // 	}
+            // else
+            // 	{
+            // 	    slide.Stop();
+            // 	}
+            // if (gamepad2.left_trigger > 0)
+            // 	{
+            // 	    slide.move(gamepad2.right_trigger);
+            // 	}
+            // else
+            // 	{
+            // 	    slide.Stop();
+            // 	}
             telemetry.addData("Status", "Run Time: " + runtime);
             telemetry.addData("rotator pos:", "%5.2f", rotator.currpos());
             telemetry.addData("armpos:", "%10d", armposition);
